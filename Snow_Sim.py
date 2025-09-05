@@ -19,10 +19,10 @@ MAX_WIND_NOISE = 1.5
 
 #Definine initial custome field
 def inital_field_x(x,y):
-    return 5
+    return abs(5-x)/abs(x)
 
 def inital_field_y(x,y):
-    return 5
+    return abs(5-y)/abs(y)
 
 
 
@@ -36,11 +36,11 @@ def project(x, y, z):
 # Snowflake class with depth
 class Snowflake:
     def __init__(self):
-        self.reset()
+        self.reset(HEIGHT)
 
-    def reset(self):
-        self.x = random.uniform(0, WIDTH)
-        self.y = random.uniform(-HEIGHT, 0)
+    def reset(self, y_start):
+        self.x = random.uniform(1e-1, WIDTH)
+        self.y = random.uniform(1e-1, y_start)
         self.z = random.uniform(Z_NEAR, Z_FAR)
         self.base_speed = 0.5 + (Z_FAR - self.z) * 0.3  # Nearer falls faster
 
@@ -52,7 +52,7 @@ class Snowflake:
 
         # Wrap around when out of screen or depth range
         if self.y > HEIGHT or self.z < Z_NEAR or self.z > Z_FAR:
-            self.reset()
+            self.reset(5e-1)
 
     def draw(self, surface):
         px, py, scale = project(self.x, self.y, self.z)
